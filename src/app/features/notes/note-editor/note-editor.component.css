@@ -1,0 +1,11 @@
+:host ::ng-deep .NgxEditor {
+  border: none !important;
+}
+
+:host ::ng-deep .NgxEditor__Content {
+  @apply prose prose-slate max-w-none min-h-[500px] p-6 !important;
+}
+
+:host ::ng-deep .NgxEditor__MenuBar {
+  @apply bg-slate-50/50 border-b border-slate-100 p-3 !important;
+}

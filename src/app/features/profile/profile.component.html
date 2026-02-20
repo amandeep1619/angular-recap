@@ -1,0 +1,47 @@
+<div class="p-8 max-w-3xl mx-auto">
+  <h1 class="text-3xl font-black text-slate-900 mb-8">Profile Settings</h1>
+
+  <div class="bg-white border border-slate-200 rounded-3xl p-8 mb-8 shadow-sm">
+    <div class="flex items-center gap-4 mb-8">
+      <div class="w-16 h-16 bg-indigo-600 text-white rounded-2xl flex items-center justify-center text-2xl font-bold">
+        {{ user.fullName ? user.fullName[0] : 'U' }}
+      </div>
+      <div>
+        <h3 class="text-xl font-bold text-slate-900">{{ user.fullName || 'User' }}</h3>
+        <p class="text-slate-500 text-sm">{{ user.email }}</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="space-y-2">
+        <label class="text-sm font-bold text-slate-700">Full Name</label>
+        <input [(ngModel)]="user.fullName" type="text" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="John Doe">
+      </div>
+      <div class="space-y-2">
+        <label class="text-sm font-bold text-slate-700">Age</label>
+        <input [(ngModel)]="user.age" type="number" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+      </div>
+      <div class="md:col-span-2 space-y-2">
+        <label class="text-sm font-bold text-slate-700">Mobile Number</label>
+        <input [(ngModel)]="user.mobileNumber" type="tel" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="+1 234 567 890">
+      </div>
+    </div>
+
+    <button (click)="saveProfile()" class="mt-8 bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100">
+      Update Profile
+    </button>
+  </div>
+
+  <div class="bg-rose-50 border border-rose-100 rounded-3xl p-8">
+    <div class="flex items-center gap-3 text-rose-600 mb-4">
+      <lucide-icon name="trash-2" [size]="20"></lucide-icon>
+      <h2 class="text-lg font-black uppercase tracking-wider">Danger Zone</h2>
+    </div>
+    <p class="text-slate-600 text-sm mb-6 leading-relaxed">
+      Once you delete your account, there is no going back. All your notebooks and notes will be permanently removed from our servers.
+    </p>
+    <button (click)="deleteAccount()" class="bg-rose-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-rose-700 transition-all shadow-lg shadow-rose-100">
+      Delete My Account
+    </button>
+  </div>
+</div>

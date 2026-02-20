@@ -1,0 +1,34 @@
+<div class="flex h-screen bg-slate-50 overflow-hidden">
+  <aside class="w-72 bg-white border-r border-slate-200 flex flex-col shadow-sm z-20">
+    <div class="p-8">
+      <div class="flex items-center gap-3 text-indigo-600">
+        <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg">
+          <lucide-icon name="notebook" [size]="24"></lucide-icon>
+        </div>
+        <span class="text-2xl font-black text-slate-900 tracking-tight">Noted.</span>
+      </div>
+    </div>
+
+    <nav class="flex-1 px-4 space-y-2">
+      <a routerLink="/home" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-slate-600 font-semibold hover:bg-slate-50 transition-all group">
+        <lucide-icon name="layout-grid" [size]="20"></lucide-icon>
+        My Notebooks
+      </a>
+      <a routerLink="/profile" routerLinkActive="bg-indigo-50 text-indigo-700 shadow-sm" class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-slate-600 font-semibold hover:bg-slate-50 transition-all group">
+        <lucide-icon name="user" [size]="20"></lucide-icon>
+        Account Profile
+      </a>
+    </nav>
+
+    <div class="p-6 border-t border-slate-100">
+      <button (click)="logout()" class="w-full flex items-center gap-3 px-4 py-3 text-rose-500 font-bold hover:bg-rose-50 rounded-xl transition-all">
+        <lucide-icon name="log-out" [size]="20"></lucide-icon>
+        Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <main class="flex-1 overflow-y-auto">
+    <router-outlet></router-outlet>
+  </main>
+</div>
