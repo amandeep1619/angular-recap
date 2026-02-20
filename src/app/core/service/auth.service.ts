@@ -1,40 +1,52 @@
 import { Injectable, PLATFORM_ID, inject, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { User } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private platformId = inject(PLATFORM_ID);
-  
-  // A signal to track login status reactively
+  readonly ACCESS_TOKEN_KEY: string = 'access_token'
+  readonly USER_ID_KEY: string = 'userId'
   isLoggedIn = signal<boolean>(false);
+  userDetails = signal<User|null>(null)
 
   constructor() {
-    // Check status on initialization (Browser only)
     if (isPlatformBrowser(this.platformId)) {
-      this.isLoggedIn.set(!!localStorage.getItem('userId'));
+      this.isLoggedIn.set(!!localStorage.getItem(this.USER_ID_KEY));
     }
   }
 
-  setUserId(id: string) {
+  saveLoginToken(token: string, userId: string) {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('userId', id);
-      this.isLoggedIn.set(true);
+      localStorage.setItem(this.ACCESS_TOKEN_KEY, token);
+      localStorage.setItem(this.USER_ID_KEY, userId);
+
     }
   }
 
-  getUserId(): string | null {
+  updateUserDetails (userDetails: User){
+    this.userDetails.set(userDetails)
+  }
+  
+  getAuthToken(): string | null {
     if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem('userId');
+      return localStorage.getItem(this.ACCESS_TOKEN_KEY);
     }
     return null;
   }
 
+  getUserId(): string {
+    return localStorage.getItem(this.USER_ID_KEY) as string
+  }
+
   logout() {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('userId');
+      localStorage.removeItem(this.ACCESS_TOKEN_KEY);
+      localStorage.removeItem(this.USER_ID_KEY);
       this.isLoggedIn.set(false);
+      this.userDetails.set(null)
     }
   }
 }

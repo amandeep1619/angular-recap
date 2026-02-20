@@ -30,7 +30,6 @@ export class SignupComponent {
         password: this.password 
       }).subscribe({
         next: (user) => {
-          this.authService.setUserId(user.id);
           this.router.navigate(['/home']);
         },
         error: (err) => {

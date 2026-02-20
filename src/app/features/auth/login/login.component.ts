@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { AuthService } from '../../../core/service/auth.service';
+import { ApiService } from '../../../core/service/api.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -13,7 +14,7 @@ import { AuthService } from '../../../core/service/auth.service';
 export class LoginComponent {
   email = '';
   password = '';
-  
+  constructor(private apiServie: ApiService){}
   private authService = inject(AuthService);
   private router = inject(Router);
 
@@ -25,9 +26,12 @@ export class LoginComponent {
     // we'll assume a successful check sets the ID in localStorage.
     
     if (this.email && this.password) {
+      this.apiServie.loginUser(this.email, this.password).subscribe((res) => {
+        const data = res.data[0]
+        this.authService.saveLoginToken(data.token, data.id)
+        this.router.navigate(['/home']);
+      })
       // Logic: Mocking a successful login by storing a dummy ID
-      this.authService.setUserId('user_123'); 
-      this.router.navigate(['/home']);
     }
   }
 }

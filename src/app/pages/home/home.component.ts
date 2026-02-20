@@ -27,10 +27,10 @@ export class HomeComponent implements OnInit {
   loadNotebooks() {
     const userId = this.authService.getUserId();
     if (userId) {
-      // this.apiService.getNotebooks(userId).subscribe({
-      //   next: (data) => this.notebooks = data,
-      //   error: (err) => console.error('Failed to load notebooks', err)
-      // });
+      this.apiService.getNoteBookList(userId).subscribe({
+        next: (data) => this.notebooks = data,
+        error: (err) => console.error('Failed to load notebooks', err)
+      });
     }
   }
 
