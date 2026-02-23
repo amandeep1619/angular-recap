@@ -3,7 +3,6 @@ import { Router, CanActivateFn } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 
 export const authGuard: CanActivateFn = () => {
-  return true
   const router = inject(Router);
   const platformId = inject(PLATFORM_ID);
 

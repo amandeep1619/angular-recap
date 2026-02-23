@@ -18,7 +18,7 @@ export class ProfileComponent implements OnInit {
   private router = inject(Router);
 
   user: User = {
-    id: '',
+    _id: '',
     email: '',
     fullName: '',
     age: 0,
@@ -42,7 +42,7 @@ export class ProfileComponent implements OnInit {
 
   saveProfile() {
     // Fixed: Removed the trailing dot and used updateUserDetails
-    this.apiService.updateUserDetails(this.user.id, this.user).subscribe({
+    this.apiService.updateUserDetails(this.user._id, this.user).subscribe({
       next: (updatedUser) => {
         this.user = updatedUser;
         alert('Profile updated successfully!');
@@ -57,7 +57,7 @@ export class ProfileComponent implements OnInit {
     );
 
     if (confirmation) {
-      this.apiService.deleteAccount(this.user.id).subscribe({
+      this.apiService.deleteAccount(this.user._id).subscribe({
         next: () => {
           this.authService.logout();
           this.router.navigate(['/signup']);

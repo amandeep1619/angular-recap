@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 // --- Data Interfaces ---
 
 export interface User {
-  id: string;
+  _id: string;
   email: string;
   password?: string;
   fullName?: string;
@@ -13,14 +13,14 @@ export interface User {
 }
 
 export interface Notebook {
-  id: string;
+  _id: string;
   name: string;
   userId: string;
   sharedWith: string[]; // Array of usernames for the overlapping circles UI
 }
 
 export interface Note {
-  id: string;
+  _id: string;
   title: string;
   body: string; // Content from the code editor
   userId: string;
@@ -63,16 +63,19 @@ export class ApiService {
     return this.http.post<User>(`${this.baseUrl}/users`, data);
   }
 
+  loginUser (email: string, password: string): Observable<apiResponse> {
+    return this.http.post<apiResponse>(`${this.baseUrl}/users/auth/login`, { email, password })
+  }
   // ==========================================
   // NOTEBOOK ENDPOINTS (Prefix: /note-books)
   // ==========================================
 
   /** Gets details including the list of notes inside the notebook */
-  getNoteBookList (userId: string): Observable<Notebook[]> {
-    return this.http.get<any>(`${this.baseUrl}/note-books/`);
+  getNoteBookList (userId: string): Observable<apiResponse> {
+    return this.http.get<any>(`${this.baseUrl}/note-books/list`);
   }
-  getNotebookDetails (id: string): Observable<Notebook & { notes: Note[] }> {
-    return this.http.get<any>(`${this.baseUrl}/note-books/${id}`);
+  getNotebookDetails (id: string): Observable<apiResponse> {
+    return this.http.get<apiResponse>(`${this.baseUrl}/note-books/${id}`);
   }
 
   updateNotebook (id: string, name: string): Observable<Notebook> {
@@ -83,32 +86,31 @@ export class ApiService {
     return this.http.delete<void>(`${this.baseUrl}/note-books/${id}`);
   }
 
-  createNotebook (name: string, userId: string): Observable<Notebook> {
-    return this.http.post<Notebook>(`${this.baseUrl}/note-books`, { name, userId });
+  createNotebook (name: string, userId: string): Observable<apiResponse> {
+    return this.http.post<apiResponse>(`${this.baseUrl}/note-books`, { name });
   }
 
 
   // ==========================================
   // NOTES ENDPOINTS (Prefix: /notes)
   // ==========================================
-
+  getNotesListByNoteId (id: string): Observable<apiResponse> {
+    return this.http.get<apiResponse>(`${this.baseUrl}/notes/${id}`)
+  }
   getNoteDetails (id: string): Observable<Note> {
     return this.http.get<Note>(`${this.baseUrl}/notes/${id}`);
   }
 
-  updateNote (id: string, data: { title?: string; body?: string }): Observable<Note> {
-    return this.http.put<Note>(`${this.baseUrl}/notes/${id}`, data);
+  updateNote ({ id, title, body }: { id: string, title: string, body: string}): Observable<apiResponse> {
+    return this.http.put<apiResponse>(`${this.baseUrl}/notes/${id}`, { id, title, jsonBody:body });
   }
 
   deleteNote (id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/notes/${id}`);
   }
 
-  createNote (title: string, body: string, userId: string, notebookId: string): Observable<Note> {
-    return this.http.post<Note>(`${this.baseUrl}/notes`, { title, body, userId, notebookId });
+  createNote ({ title, body, userId, notebookId }: { title: string, body: string, userId: string, notebookId: string }): Observable<apiResponse> {
+    return this.http.post<apiResponse>(`${this.baseUrl}/notes`, { title, jsonBody:body, userId, notebookId });
   }
 
-  loginUser (email: string, password: string): Observable<apiResponse> {
-    return this.http.post<apiResponse>(`${this.baseUrl}/users/auth/login`, { email, password })
-  }
 }

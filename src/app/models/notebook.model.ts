@@ -1,12 +1,12 @@
 export interface Notebook {
-  id: string;
+  _id: string;
   name: string;
   userId: string;
   sharedWith: string[]; // List of usernames
 }
 
 export interface Note {
-  id: string;
+  _id: string;
   title: string;
   body: string;
   notebookId: string;

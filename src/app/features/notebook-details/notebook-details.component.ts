@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { ApiService } from '../../core/service/api.service';
-import { Note } from '../../models/notebook.model';
 
 @Component({
   selector: 'app-notebook-detail',
@@ -18,7 +17,12 @@ export class NotebookDetailComponent implements OnInit {
 
   notebookId: string | null = null;
   notebookName: string = 'Loading...';
-  notes: Note[] = [];
+  notes: any[] = []; 
+
+  // Modal State
+  isDeleteModalOpen = false;
+  noteToDelete: any = null;
+  isProcessing = false;
 
   ngOnInit() {
     this.notebookId = this.route.snapshot.paramMap.get('id');
@@ -29,9 +33,14 @@ export class NotebookDetailComponent implements OnInit {
 
   loadNotebookData() {
     this.apiService.getNotebookDetails(this.notebookId!).subscribe({
-      next: (data) => {
-        this.notebookName = data.name;
-        this.notes = data.notes;
+      next: (res: any) => {
+        const { data } = res;
+        if (data && data.length > 0) {
+          const {name, notes} = data[0]
+          console.log("data ->", data)
+          this.notebookName = name
+          this.notes = notes
+        }
       },
       error: (err) => console.error('Error loading notebook', err)
     });
@@ -42,12 +51,38 @@ export class NotebookDetailComponent implements OnInit {
   }
 
   createNewNote() {
-    // Logic to open a creation modal or redirect to /notes/new
+    this.router.navigate(['/notes/add-note'], { 
+      queryParams: { notebookId: this.notebookId } 
+    });
   }
 
-  deleteNote(id: string) {
-    if(confirm('Are you sure you want to delete this note?')) {
-      this.apiService.deleteNote(id).subscribe(() => this.loadNotebookData());
-    }
+  // --- Custom Delete Workflow ---
+  openDeleteModal(event: Event, note: any) {
+    event.stopPropagation(); // Stop card click
+    this.noteToDelete = note;
+    this.isDeleteModalOpen = true;
+  }
+
+  closeDeleteModal() {
+    this.isDeleteModalOpen = false;
+    this.noteToDelete = null;
+    this.isProcessing = false;
+  }
+
+  confirmDelete() {
+    if (!this.noteToDelete) return;
+    
+    this.isProcessing = true;
+    this.apiService.deleteNote(this.noteToDelete._id).subscribe({
+      next: () => {
+      
+        this.closeDeleteModal();
+        this.loadNotebookData()
+      },
+      error: (err) => {
+        alert('Failed to delete note.');
+        this.isProcessing = false;
+      }
+    });
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Required for ngModel
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { ApiService } from '../../core/service/api.service';
@@ -17,8 +17,15 @@ export class HomeComponent implements OnInit {
   private authService = inject(AuthService);
 
   notebooks: any[] = [];
+  
+  // Create Modal State
   isModalOpen = false;
   newNotebookName = '';
+
+  // Delete Modal State
+  isDeleteModalOpen = false;
+  notebookToDelete: any = null;
+  isDeleting = false;
 
   ngOnInit() {
     this.loadNotebooks();
@@ -28,12 +35,44 @@ export class HomeComponent implements OnInit {
     const userId = this.authService.getUserId();
     if (userId) {
       this.apiService.getNoteBookList(userId).subscribe({
-        next: (data) => this.notebooks = data,
+        next: (data) => {
+          this.notebooks = data.data;
+        },
         error: (err) => console.error('Failed to load notebooks', err)
       });
     }
   }
 
+  // --- New Delete Logic ---
+  openDeleteModal(event: Event, notebook: any) {
+    event.stopPropagation(); // Prevents navigating to notebook details
+    this.notebookToDelete = notebook;
+    this.isDeleteModalOpen = true;
+  }
+
+  closeDeleteModal() {
+    this.isDeleteModalOpen = false;
+    this.notebookToDelete = null;
+    this.isDeleting = false;
+  }
+
+  confirmDelete() {
+    if (!this.notebookToDelete) return;
+    
+    this.isDeleting = true;
+    this.apiService.deleteNotebook(this.notebookToDelete._id).subscribe({
+      next: () => {
+        this.loadNotebooks();
+        this.closeDeleteModal();
+      },
+      error: (err) => {
+        alert('Failed to delete notebook.');
+        this.isDeleting = false;
+      }
+    });
+  }
+
+  // --- Create Logic (Preserved) ---
   openModal() {
     this.isModalOpen = true;
   }
@@ -48,11 +87,11 @@ export class HomeComponent implements OnInit {
     if (!this.newNotebookName.trim() || !userId) return;
 
     this.apiService.createNotebook(this.newNotebookName, userId).subscribe({
-      next: (newBook) => {
-        this.notebooks.unshift(newBook); // Add to list immediately
+      next: () => {
         this.closeModal();
+        this.loadNotebooks();
       },
-      error: (err) => alert('Failed to create notebook. Try again.')
+      error: (err) => alert('Failed to create notebook.')
     });
   }
 

@@ -38,7 +38,10 @@ export class AuthService {
   }
 
   getUserId(): string {
-    return localStorage.getItem(this.USER_ID_KEY) as string
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem(this.USER_ID_KEY) as string
+    }
+    return ''
   }
 
   logout() {

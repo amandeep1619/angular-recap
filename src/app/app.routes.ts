@@ -39,9 +39,9 @@ export const routes: Routes = [
         path: 'notebook/:id', 
         loadComponent: () => import('./features/notebook-details/notebook-details.component').then(m => m.NotebookDetailComponent) 
       },
-      { path: 'edit-note/:id', component: NoteEditorComponent },
-      { path: 'add-note', component: NoteEditorComponent }
-
+      { path: 'notes/edit-note/:id', component: NoteEditorComponent },
+      { path: 'notes/add-note', component: NoteEditorComponent },
+      { path: 'notes/view/:id', component: NoteEditorComponent }
     ]
   },
   
