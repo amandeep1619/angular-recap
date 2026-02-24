@@ -17,14 +17,6 @@
         <label class="text-sm font-bold text-slate-700">Full Name</label>
         <input [(ngModel)]="user.fullName" type="text" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="John Doe">
       </div>
-      <div class="space-y-2">
-        <label class="text-sm font-bold text-slate-700">Age</label>
-        <input [(ngModel)]="user.age" type="number" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
-      </div>
-      <div class="md:col-span-2 space-y-2">
-        <label class="text-sm font-bold text-slate-700">Mobile Number</label>
-        <input [(ngModel)]="user.mobileNumber" type="tel" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="+1 234 567 890">
-      </div>
     </div>
 
     <button (click)="saveProfile()" class="mt-8 bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100">

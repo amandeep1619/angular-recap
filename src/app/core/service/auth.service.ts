@@ -10,7 +10,7 @@ export class AuthService {
   readonly ACCESS_TOKEN_KEY: string = 'access_token'
   readonly USER_ID_KEY: string = 'userId'
   isLoggedIn = signal<boolean>(false);
-  userDetails = signal<User|null>(null)
+  userDetails = signal<User | null>(null)
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
@@ -18,7 +18,7 @@ export class AuthService {
     }
   }
 
-  saveLoginToken(token: string, userId: string) {
+  saveLoginToken (token: string, userId: string) {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem(this.ACCESS_TOKEN_KEY, token);
       localStorage.setItem(this.USER_ID_KEY, userId);
@@ -26,25 +26,27 @@ export class AuthService {
     }
   }
 
-  updateUserDetails (userDetails: User){
+  updateUserDetails (userDetails: User) {
     this.userDetails.set(userDetails)
   }
-  
-  getAuthToken(): string | null {
+
+  getAuthToken (): string | null {
     if (isPlatformBrowser(this.platformId)) {
       return localStorage.getItem(this.ACCESS_TOKEN_KEY);
     }
     return null;
   }
 
-  getUserId(): string {
+  getUserId (): string {
     if (isPlatformBrowser(this.platformId)) {
       return localStorage.getItem(this.USER_ID_KEY) as string
     }
     return ''
   }
-
-  logout() {
+  getUserDetails () {
+    return this.userDetails
+  }
+  logout () {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem(this.ACCESS_TOKEN_KEY);
       localStorage.removeItem(this.USER_ID_KEY);

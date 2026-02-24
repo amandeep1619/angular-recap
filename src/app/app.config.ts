@@ -21,7 +21,9 @@ import {
   Calendar,
   ChevronRight,
   FilePlus2,
-  Edit3
+  Edit3,
+  Share2,
+  Search
 } from 'lucide-angular';
 
 import { authInterceptor } from './core/interceptor/auth.interceptor';
@@ -49,7 +51,9 @@ export const appConfig: ApplicationConfig = {
         Calendar,
         ChevronRight,
         FilePlus2,
-        Edit3
+        Edit3,
+        Share2,
+        Search
       })
     )
   ]

@@ -21,37 +21,35 @@ export class ProfileComponent implements OnInit {
     _id: '',
     email: '',
     fullName: '',
-    age: 0,
-    mobileNumber: ''
+    age: 0
   };
 
-  ngOnInit() {
+  ngOnInit () {
     const userId = this.authService.getUserId();
     if (userId) {
       this.loadUserProfile(userId);
     }
   }
 
-  loadUserProfile(id: string) {
+  loadUserProfile (id: string) {
     // API service uses getUserDetails
     this.apiService.getUserDetails(id).subscribe({
-      next: (data) => this.user = data,
+      next: (data) => this.user = data.data[0],
       error: (err) => console.error('Failed to load profile', err)
     });
   }
 
-  saveProfile() {
+  saveProfile () {
     // Fixed: Removed the trailing dot and used updateUserDetails
-    this.apiService.updateUserDetails(this.user._id, this.user).subscribe({
+    this.apiService.updateUserDetails(this.user._id, { fullName: this.user.fullName, mobileNumber: this.user.mobileNumber }).subscribe({
       next: (updatedUser) => {
-        this.user = updatedUser;
-        alert('Profile updated successfully!');
+       this.loadUserProfile(this.user._id)
       },
       error: (err) => alert('Update failed. Please try again.')
     });
   }
 
-  deleteAccount() {
+  deleteAccount () {
     const confirmation = confirm(
       'WARNING: Are you sure you want to delete your account? This action is permanent and all your notebooks will be lost.'
     );

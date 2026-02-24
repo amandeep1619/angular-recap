@@ -1,137 +1,195 @@
 <div class="p-4 sm:p-8 max-w-7xl mx-auto">
-  
+
   <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 sm:mb-10">
     <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">My Notebooks</h1>
-    
+
     @if (notebooks.length > 0) {
-      <button 
-        (click)="openModal()" 
-        class="w-full sm:w-auto bg-indigo-600 text-white px-5 py-3 rounded-xl font-semibold hover:bg-indigo-700 transition-all shadow-lg flex items-center justify-center gap-2 active:scale-95"
-      >
-        <lucide-icon name="plus" [size]="20"></lucide-icon>
-        <span>Create Notebook</span>
-      </button>
+    <button (click)="openModal()"
+      class="w-full sm:w-auto bg-indigo-600 text-white px-5 py-3 rounded-xl font-semibold hover:bg-indigo-700 transition-all shadow-lg flex items-center justify-center gap-2 active:scale-95">
+      <lucide-icon name="plus" [size]="20"></lucide-icon>
+      <span>Create Notebook</span>
+    </button>
     }
   </div>
 
   @if (notebooks.length > 0) {
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-      @for (book of notebooks; track book._id) {
-        <div 
-          [routerLink]="['/notebook', book._id]" 
-          class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 hover:shadow-xl hover:border-indigo-200 transition-all cursor-pointer group active:bg-slate-50 relative"
-        >
-          <button 
-            (click)="openDeleteModal($event, book)"
-            class="absolute top-4 right-4 p-2 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all opacity-0 group-hover:opacity-100 z-10"
-            title="Delete Notebook"
-          >
-            <lucide-icon name="trash-2" [size]="18"></lucide-icon>
-          </button>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+    @for (book of notebooks; track book._id) {
+    <div [routerLink]="['/notebook', book._id]"
+      class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 hover:shadow-xl hover:border-indigo-200 transition-all cursor-pointer group active:bg-slate-50 relative">
+      <div class="action-buttons flex items-center justify-between">
 
-          <div class="flex justify-between items-start mb-4 sm:mb-6">
-            <div class="w-12 h-12 sm:w-14 sm:h-14 bg-indigo-50 text-indigo-600 border border-indigo-100 rounded-2xl flex items-center justify-center text-xl sm:text-2xl font-bold group-hover:bg-indigo-600 group-hover:text-white transition-all">
-              {{ getInitial(book.name) }}
-            </div>
-          </div>
-          
-          <h3 class="text-lg sm:text-xl font-bold text-slate-800 mb-1 sm:mb-2 truncate pr-8">
-            {{ book.name }}
-          </h3>
-          
-          <p class="text-slate-500 text-xs sm:text-sm flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-            Active Notebook
-          </p>
-        </div>
-      }
-    </div>
-  } @else {
-    <div class="flex flex-col items-center justify-center min-h-[50vh] sm:min-h-[60vh] text-center px-4">
-      <div class="w-20 h-20 sm:w-24 sm:h-24 bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center mb-6">
-        <lucide-icon name="notebook" [size]="48" strokeWidth="1.5"></lucide-icon>
+        <button (click)="openShareModal($event, book)" class=" absolute top-4 right-12 p-2 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-lg
+          transition-all opacity-0 group-hover:opacity-100 z-10" title="Share Notebook">
+          <lucide-icon name="share-2" [size]="18"></lucide-icon>
+        </button>
+        <button (click)="openDeleteModal($event, book)"
+          class="absolute top-4 right-4 p-2 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all opacity-0 group-hover:opacity-100 z-10"
+          title="Delete Notebook">
+          <lucide-icon name="trash-2" [size]="18"></lucide-icon>
+        </button>
       </div>
-      
-      <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-2">No notebooks yet</h2>
-      <p class="text-slate-400 text-sm sm:text-base max-w-xs sm:max-w-sm mb-8">
-        Your creative journey starts here. Create your first notebook to begin organizing your thoughts.
-      </p>
 
-      <button 
-        (click)="openModal()" 
-        class="w-full sm:w-auto bg-indigo-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-100 flex items-center justify-center gap-3 active:scale-95"
-      >
-        <lucide-icon name="plus" [size]="22"></lucide-icon>
-        Create Your First Notebook
-      </button>
+      <div class="flex justify-between items-start mb-4 sm:mb-6">
+        <div
+          class="w-12 h-12 sm:w-14 sm:h-14 bg-indigo-50 text-indigo-600 border border-indigo-100 rounded-2xl flex items-center justify-center text-xl sm:text-2xl font-bold group-hover:bg-indigo-600 group-hover:text-white transition-all">
+          {{ getInitial(book.name) }}
+        </div>
+      </div>
+
+      <h3 class="text-lg sm:text-xl font-bold text-slate-800 mb-1 sm:mb-2 truncate pr-8">
+        {{ book.name }}
+      </h3>
+
+      <p class="text-slate-500 text-xs sm:text-sm flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        Active Notebook
+      </p>
     </div>
+    }
+  </div>
+  } @else {
+  <div class="flex flex-col items-center justify-center min-h-[50vh] sm:min-h-[60vh] text-center px-4">
+    <div
+      class="w-20 h-20 sm:w-24 sm:h-24 bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center mb-6">
+      <lucide-icon name="notebook" [size]="48" strokeWidth="1.5"></lucide-icon>
+    </div>
+
+    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-2">No notebooks yet</h2>
+    <p class="text-slate-400 text-sm sm:text-base max-w-xs sm:max-w-sm mb-8">
+      Your creative journey starts here. Create your first notebook to begin organizing your thoughts.
+    </p>
+
+    <button (click)="openModal()"
+      class="w-full sm:w-auto bg-indigo-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-100 flex items-center justify-center gap-3 active:scale-95">
+      <lucide-icon name="plus" [size]="22"></lucide-icon>
+      Create Your First Notebook
+    </button>
+  </div>
   }
 </div>
 
 @if (isModalOpen) {
-  <div class="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm">
-    <div class="bg-white rounded-t-[32px] sm:rounded-3xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all animate-in slide-in-from-bottom sm:zoom-in duration-300">
-      <div class="p-6 sm:p-8">
-        <div class="flex justify-between items-center mb-2">
-          <h2 class="text-xl sm:text-2xl font-bold text-slate-900">New Notebook</h2>
-          <button (click)="closeModal()" class="sm:hidden p-2 text-slate-400">
-            <lucide-icon name="x" [size]="20"></lucide-icon>
-          </button>
-        </div>
-        <p class="text-slate-500 text-sm sm:text-base mb-6">Give your workspace a name to get started.</p>
+<div
+  class="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm">
+  <div
+    class="bg-white rounded-t-[32px] sm:rounded-3xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all animate-in slide-in-from-bottom sm:zoom-in duration-300">
+    <div class="p-6 sm:p-8">
+      <div class="flex justify-between items-center mb-2">
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-900">New Notebook</h2>
+        <button (click)="closeModal()" class="sm:hidden p-2 text-slate-400">
+          <lucide-icon name="x" [size]="20"></lucide-icon>
+        </button>
+      </div>
+      <p class="text-slate-500 text-sm sm:text-base mb-6">Give your workspace a name to get started.</p>
 
-        <div class="space-y-4">
-          <div>
-            <label class="block text-xs sm:text-sm font-bold text-slate-700 mb-2 uppercase tracking-wider">Notebook Name</label>
-            <input 
-              [(ngModel)]="newNotebookName"
-              type="text" 
-              placeholder="e.g. Work, Journal, Ideas"
-              class="w-full px-4 py-3 sm:py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-all text-base"
-              (keyup.enter)="confirmCreate()"
-              autofocus
-            >
-          </div>
-        </div>
-
-        <div class="flex flex-col-reverse sm:flex-row gap-3 mt-8">
-          <button (click)="closeModal()" class="w-full sm:flex-1 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-100 transition-all">
-            Cancel
-          </button>
-          <button 
-            (click)="confirmCreate()"
-            [disabled]="!newNotebookName.trim()"
-            class="w-full sm:flex-1 px-4 py-3 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-indigo-200"
-          >
-            Create
-          </button>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs sm:text-sm font-bold text-slate-700 mb-2 uppercase tracking-wider">Notebook
+            Name</label>
+          <input [(ngModel)]="newNotebookName" type="text" placeholder="e.g. Work, Journal, Ideas"
+            class="w-full px-4 py-3 sm:py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-all text-base"
+            (keyup.enter)="confirmCreate()" autofocus>
         </div>
       </div>
-    </div>
-  </div>
-}
 
-@if (isDeleteModalOpen) {
-  <div class="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-    <div class="bg-white rounded-[32px] shadow-2xl w-full max-w-sm p-8 text-center animate-in zoom-in duration-300">
-      <div class="w-16 h-16 bg-rose-50 text-rose-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
-        <lucide-icon name="alert-triangle" [size]="32"></lucide-icon>
-      </div>
-      <h2 class="text-xl font-black text-slate-900 mb-2">Delete Notebook?</h2>
-      <p class="text-slate-500 mb-8 text-sm leading-relaxed">
-        Are you sure you want to delete <span class="text-slate-900 font-bold">"{{ notebookToDelete?.name }}"</span>? All notes inside will be removed.
-      </p>
-      
-      <div class="flex gap-3">
-        <button (click)="closeDeleteModal()" class="flex-1 py-3.5 rounded-xl font-bold text-slate-500 bg-slate-50 hover:bg-slate-100 transition-all">
+      <div class="flex flex-col-reverse sm:flex-row gap-3 mt-8">
+        <button (click)="closeModal()"
+          class="w-full sm:flex-1 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-100 transition-all">
           Cancel
         </button>
-        <button (click)="confirmDelete()" [disabled]="isDeleting"
-          class="flex-1 py-3.5 rounded-xl font-bold text-white bg-rose-500 hover:bg-rose-600 shadow-lg shadow-rose-100 transition-all flex items-center justify-center">
-          <lucide-icon *ngIf="isDeleting" name="loader-2" class="animate-spin mr-2" [size]="18"></lucide-icon>
-          Delete
+        <button (click)="confirmCreate()" [disabled]="!newNotebookName.trim()"
+          class="w-full sm:flex-1 px-4 py-3 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-indigo-200">
+          Create
         </button>
       </div>
     </div>
   </div>
+</div>
+}
+@if (isShareModalOpen) {
+<div
+  class="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
+  <div class="bg-white rounded-[32px] shadow-2xl w-full max-w-md p-8 animate-in zoom-in duration-300">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-black text-slate-900">Share Notebook</h2>
+      <button (click)="closeShareModal()" class="p-2 text-slate-400 hover:bg-slate-100 rounded-full">
+        <lucide-icon name="x" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <p class="text-slate-500 mb-6">Sharing: <span class="font-bold text-slate-900">{{ notebookToShare?.name }}</span>
+    </p>
+
+    <div class="flex flex-wrap gap-2 mb-4">
+      @for (user of selectedUsers; track user._id) {
+      <div
+        class="flex items-center gap-2 bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-full text-sm font-bold border border-indigo-100">
+        {{ user.email }}
+        <button (click)="removeUser(user._id)" class="hover:text-indigo-900">
+          <lucide-icon name="x" [size]="14"></lucide-icon>
+        </button>
+      </div>
+      }
+    </div>
+
+    <div class="relative mb-8">
+      <lucide-icon name="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+        [size]="18"></lucide-icon>
+      <input [(ngModel)]="userSearchQuery" (input)="onSearchQueryChange()" type="text"
+        placeholder="Search users by email..."
+        class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-all">
+      @if (searchResults.length > 0) {
+      <div
+        class="absolute top-full left-0 w-full bg-white border border-slate-200 mt-2 rounded-2xl shadow-xl z-50 max-h-48 overflow-y-auto">
+        @for (user of searchResults; track user._id) {
+        <button (click)="selectUser(user)"
+          class="w-full p-4 text-left hover:bg-slate-50 flex flex-col border-b border-slate-50 last:border-0">
+          <span class="font-bold text-slate-900 text-sm">{{ user.name }}</span>
+          <span class="text-xs text-slate-500">{{ user.email }}</span>
+        </button>
+        }
+      </div>
+      } @if (searchResults.length == 0 && userSearchQuery.length !==0) {
+      <div
+        class="absolute top-full left-0 w-full bg-white border border-slate-200 mt-2 rounded-2xl shadow-xl z-50 max-h-48 overflow-y-auto">
+        No user found
+      </div>
+      }
+    </div>
+
+    <button (click)="confirmShare()" [disabled]="selectedUsers.length === 0 || isSharing"
+      class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold hover:bg-indigo-700 disabled:opacity-50 disabled:bg-slate-300 transition-all flex items-center justify-center gap-2">
+      <lucide-icon *ngIf="isSharing" name="loader-2" class="animate-spin" [size]="18"></lucide-icon>
+      Share with {{ selectedUsers.length }} User(s)
+    </button>
+  </div>
+</div>
+}
+@if (isDeleteModalOpen) {
+<div
+  class="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+  <div class="bg-white rounded-[32px] shadow-2xl w-full max-w-sm p-8 text-center animate-in zoom-in duration-300">
+    <div class="w-16 h-16 bg-rose-50 text-rose-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+      <lucide-icon name="alert-triangle" [size]="32"></lucide-icon>
+    </div>
+    <h2 class="text-xl font-black text-slate-900 mb-2">Delete Notebook?</h2>
+    <p class="text-slate-500 mb-8 text-sm leading-relaxed">
+      Are you sure you want to delete <span class="text-slate-900 font-bold">"{{ notebookToDelete?.name }}"</span>? All
+      notes inside will be removed.
+    </p>
+
+    <div class="flex gap-3">
+      <button (click)="closeDeleteModal()"
+        class="flex-1 py-3.5 rounded-xl font-bold text-slate-500 bg-slate-50 hover:bg-slate-100 transition-all">
+        Cancel
+      </button>
+      <button (click)="confirmDelete()" [disabled]="isDeleting"
+        class="flex-1 py-3.5 rounded-xl font-bold text-white bg-rose-500 hover:bg-rose-600 shadow-lg shadow-rose-100 transition-all flex items-center justify-center">
+        <lucide-icon *ngIf="isDeleting" name="loader-2" class="animate-spin mr-2" [size]="18"></lucide-icon>
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
 }

@@ -47,8 +47,8 @@ export class ApiService {
   // USERS ENDPOINTS (Prefix: /users)
   // ==========================================
 
-  getUserDetails (id: string): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/users/${id}`);
+  getUserDetails (id: string): Observable<apiResponse> {
+    return this.http.get<apiResponse>(`${this.baseUrl}/users/${id}`);
   }
 
   updateUserDetails (id: string, data: Partial<User>): Observable<User> {
@@ -66,6 +66,11 @@ export class ApiService {
   loginUser (email: string, password: string): Observable<apiResponse> {
     return this.http.post<apiResponse>(`${this.baseUrl}/users/auth/login`, { email, password })
   }
+
+  searchUser (searchQuery: string): Observable<apiResponse> {
+    return this.http.get<apiResponse>(`${this.baseUrl}/users/search?searchTerm=${searchQuery}`)
+  }
+
   // ==========================================
   // NOTEBOOK ENDPOINTS (Prefix: /note-books)
   // ==========================================
